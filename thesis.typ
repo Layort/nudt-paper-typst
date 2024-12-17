@@ -28,16 +28,16 @@
 // Take a look at the file `template.typ` in the file panel
 // to customize this template and discover how it works.
 #show: project.with(
-  title: "凌霄宝殿建设与维护关键技术研究",
-  name: "孙悟空",
-  idnum: "202102001036",
+  title: "面向无人机的3D目标检测算法",
+  name: "赖宇",
+  idnum: "202102001020",
   major2: "筋斗云运维与保障", 
   major1: "御马科学与技术", 
-  college: "斜月三星洞",
+  college: "计算机学院",
   grade: "2021级", 
-  advisor: "菩提祖师",
-  jobtitle: "教授",
-  unit: "西牛贺州招生录取委员会"
+  advisor: "邓明堂",
+  jobtitle: "副研究员",
+  unit: "国防科大计算机学院学员一大队学员五队"
 )
 
 // We generated the example code below so you can see how
