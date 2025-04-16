@@ -1,3 +1,9 @@
+#import "@preview/cuti:0.2.1": show-cn-fakebold
+#show: show-cn-fakebold
+#let tnr = "Times New Roman"
+#let fsong = (tnr, "FangSong")
+#let song = (tnr, "SimSun")
+#let hei = (tnr, "SimHei")
 #import "thesis-template.typ": *
 #import "templates/i-figured.typ"
 #set heading(numbering: "1.")
@@ -135,7 +141,7 @@ B. 基于CNN的单阶段检测器。
 
 Transformer架构的引入标志着目标检测进入全局注意力驱动（Global Attention-driven）的新阶段。Carion等人于2020年提出的DETR首次实现完全端到端检测，通过集合预测（Set Prediction）机制和编码器-解码器架构（Encoder-Decoder Architecture）替代手工设计的锚框与NMS。然而，其平方级计算复杂度（O(N²) Complexity）导致训练收敛缓慢且小目标检测性能受限。Zhu等人提出的Deformable DETR引入多尺度可变形注意力（Multi-scale Deformable Attention），在COCO数据集上以71.9% AP\@0.5 刷新性能记录，同时将训练周期缩短至原算法的1/10 。
 
-=== 基于RGB图像的3D目标检测算法
+=== 基于RGB图像的3D目标检测算法 <1.2.5>
 // 这里用的文章是 3D Object Detection for Autonomous Driving: A Survey
 
 
@@ -401,9 +407,9 @@ DETR模型使用了一种全新的视角来看待目标检测任务，是首个�
 
 #text(weight: "bold")[特征提取骨干网络]。将输入的图片提取特征，是计算机视觉中常用的做法。DETR使用CNN来提取图片的多尺度特征图（如经典的ResNet）,抽取出的特征不但减少了模型的计算量，还加速模型训练时的收敛速度，并且在不同下游任务中拥有优异的泛化性。
 
-Transformer编码器-解码器架构。特征提取骨干网络抽取的特征展平（flatten）后加上位置编码即为Query序列。Query序列经过多层编码器编码后传递给解码器，解码器与编码后的序列做交叉注意力后输出结果序列。结果序列经过简单的前馈神经网络后得到分类的结果。这里值得一提的是编码器的初始化输入序列是可以学习的参数，每一个Query代表着一个物体，经过交叉注意力对特定物体进行聚合得到物体的精细位置。
+*Transformer编码器-解码器架构*。特征提取骨干网络抽取的特征展平（flatten）后加上位置编码即为Query序列。Query序列经过多层编码器编码后传递给解码器，解码器与编码后的序列做交叉注意力后输出结果序列。结果序列经过简单的前馈神经网络后得到分类的结果。这里值得一提的是编码器的初始化输入序列是可以学习的参数，每一个Query代表着一个物体，称为物体序列（Object Query)，经过交叉注意力对特定物体进行聚合得到物体的精细位置。
 
-集合预测损失函数。DETR将目标检测看作集合预测问题，其优化目标即输出集合与真实集合一致。这一优化目标需要模型预测全局的目标整体。为了将集合中的元素一一对应，真实集合中会加入空集元素代表无目标（DETR的预测元素个数固定且远大于真实目标个数），然后使用二分图匹配算法（匈牙利算法）来计算两个集合之间的最佳匹配，该匹配下的定位损失和分类损失作为评判的标准，即为损失函数。
+*集合预测损失函数*。DETR将目标检测看作集合预测问题，其优化目标即输出集合与真实集合一致。这一优化目标需要模型预测全局的目标整体。为了将集合中的元素一一对应，真实集合中会加入空集元素代表无目标（DETR的预测元素个数固定且远大于真实目标个数），然后使用二分图匹配算法（匈牙利算法）来计算两个集合之间的最佳匹配，该匹配下的定位损失和分类损失作为评判的标准，即为损失函数。
 
 
 === 多视角端到端3D目标检测模型 DETR3D
@@ -412,7 +418,7 @@ DETR3D将DETR中基于Transformer的2D检测框架引入到了3D检测任务中�
 
 整个网络可大致分为三个部分：
 
-特征提取骨干网络。
+*特征提取骨干网络*。
 输入车载环视的6张图片,每张图片通过ResNet等2D骨干网络提取特征；再通过FPN得到4个不同尺度特征图
 
 #figure(
@@ -420,15 +426,15 @@ DETR3D将DETR中基于Transformer的2D检测框架引入到了3D检测任务中�
   caption: [DETR3D模型示意图]
 )<detr3d_fig>
 
-解码器。
+*解码器*。
 解码器的输入是特征提取骨干网络输出的特征图，在特征层面实现2D到3D的转换，避免深度估计带来的误差。
-解码器的初始化物体序列的生成类似DETR，随机生成$M$个Query。
+其初始化物体序列的生成类似DETR，随机生成$M$个Query。
 
 接着如@detr3d_fig 中蓝线所示，使用子网络预测query在三维空间中的一个参考点（通常是简单的线性变换）。然后如绿线所示，利用相机内外参，将这个参考点反投影回图像中，找到其在原始图像中对应的位置。找到原始位置后将投影后的点对应到FPN中的每一个尺度的特征图上。
 
 由于投影点经过下采样后在不同尺度的特征图上很可能没有刚好对应的特征点，因此采用双线性插值的方法来获取得到在每个尺度上的特征。将不同尺度上和不同位置相机上的提取到的特征进行求和平均处理，利用多头注意力机制，将找出的特征映射部分对物体序列进行修正。这种修正过程是逐层进行的，理论上，更靠后的层应该会吸纳更多的特征信息。
 
-集合预测损失函数。这一部分与DETR相似，解码器的每一层输出都计算loss。回归损失采用L1损失，分类损失使用focal loss。
+*集合预测损失函数*。这一部分与DETR相似，解码器的每一层输出都计算loss。回归损失采用L1损失，分类损失使用focal loss。
 
 
 
@@ -462,6 +468,100 @@ $
   pagebreak()
 }
 
-= 第三章标题
+= 多视角的时空特征结合端到端3D目标检测算法
+
+== 引言
+
+针对无人机的3D目标检测，上一章完成了面向无人机的3D目标检测数据集UAV3D、3D目标检测任务的详细介绍、Transformer以及DETR3D模型的介绍。本章将详细分析DETR3D和其他3D目标检测算法应用于UAV3D数据集的实验结果，主要基于DETR3D算法的实验结果提出进一步的改进方案。根据DETR3D的实验结果，提出融合数据集的时序信息，加入前一帧模型的预测信息，加速模型收敛，并且增强模型检测的鲁棒性。其次利用数据集中无人机的位姿信息，对比前后帧的位姿可以得到上一帧目标的到下一帧的位置变换矩阵，将从上一帧获取的目标Query经过旋转变换后得到当前帧的相对3D位置。最后在UAV3D数据集上对方法进行了验证。
 
 
+== 现有算法在UAV3D数据集的检测效果
+
+为了测试现有面向车端的多视角3D目标检测模型在UAV3D数据集上的表现，本文选取了BEVFusion、DETR3D和PETR三个经典的多视角3D目标检测模型，分别使用UAV3D数据集进行训练。
+
+训练使用的环境配置为Python 3.8.20，使用RTX3090\*4 和V100\*4 GPU以及Intel(R) Xeon(R) Gold 6226\@2.90GHz 16核\*2。训练数据集UAV3D中的1000个场景（Scene）中70%作为训练集，15%作为验证集，剩下的15%作为测试集，进行训练。
+
+实验结果如下表：
+
+#{
+  figure(
+    table(
+      columns: (auto,auto,auto,auto,auto,auto,auto,auto),
+      // rows: auto,
+      align: center,
+      table.header([模型],[特征提取骨干网络],[图片大小],[*mAP$arrow.t$*],[*NDS$arrow.t$*],[*mATE$arrow.b$*],[*mASE$arrow.b$*],[*mAOE$arrow.b$*]),
+      [BEVFusion],  [Res-101],[$800 times 450$],[0.536],[0.582],[0.521],[0.*154*],[0.343],
+      [PETR],       [Res-50], [$800 times 450$],[0.581],[0.632],[0.625],[0.160],[*0.064*],
+      [DETR3D],     [Res-101],[$800 times 450$],[*0.610*],[*0.671*],[*0.494*],[0.158],[0.070],
+      
+    ),
+    caption: [BEVFusion、PETR、DETR3D模型在UAV3D数据集上的表现]
+  )
+}<prev_model_fig>
+
+=== 实验结果分析
+
+如@prev_model_fig 中数据所示，综合表现最佳的模型为DETR3D，虽然其mASE略低于BEVFusion而mAOE低于PETR，但都在同一水平，相差不大。而DETR3D的mAP和NDS指标明显优于PETR与BEVFusion模型。
+
+PETR与BEVFusion模型在@1.2.5 中有关于总体的介绍。其中BEVFusion模型支持多模态输入，在NuScenes数据集上的相机与激光雷达多模态输入的mAP指标为68.52%，而多视角相机的得分仅为35.56%。UAV3D数据集面向多视角的相机，所以BEVFusion的表现差于PETR和DETR3D。PETR模型综合表现上略差于DETR3D模型，主要原因在于PETR使用的特征提取骨干网络与DETR3D不同，提取的图像特征不够精细与鲁棒，影响后续结构的训练。
+
+接下来我们将详细分析DETR3D模型的预测结果，并提出改进的思路。
+
+#{
+  figure(
+    grid(
+    columns: 2,
+    gutter: 3pt,  // 图片间距
+    image("images/Chapter3/RIGHT_gt.png", width: 100%),
+    image("images/Chapter3/RIGHT_pred.png", width: 100%),
+    ),
+  caption: [真实值（左）与DETR3D预测值（右）的对比]
+  )
+} <detr3d_pred_gt_fig>
+
+@detr3d_pred_gt_fig 是选取的一张右侧摄像头的图片，左边是真实值，右边是DETR3D预测的3D边界框。由于DETR3D使用物体序列来作为物体的位置，其默认个数达到900个，所以右侧图会有较多的3D边界框，可以代表当前图片中DETR3D模型关注的区域。
+
+对比左右图，可以发现DETR3D目前存在的缺点如下：
+
+1、*部分遮挡物体检测失败。* 可以看到，对于部分遮挡的车辆，DETR3D并没有较好的识别，这说明DETR3D模型的鲁棒性不足。
+
+
+2、*非目标物体分类错误。* DETR3D的Query目标集中在真实值的附近，有时候也会在无车的道路上识别出车辆，尽管模型给出该边界框的置信度较低，但也说明模型没能很好的区分目标与非目标物体。该问题的根源在于第三点，由于数据集中目标时常出现在建筑之后，这一部分目标的图像特征往往呈现为建筑的图像特征，导致模型难以区分。
+
+
+3、*遮挡物体预测错误。* 第三点的问题根源与第二点相同，数据集中被建筑物或者树木等环境遮挡的目标车辆难以准确预测。完全遮挡物体的预测本身是一个非常有挑战性的任务，这需要模型对于目标的运动轨迹拥有良好的建模能力，并且模拟物体与环境的交互方式以推测遮挡目标的位置信息。
+
+
+#{
+  figure(
+    grid(
+    columns: 4,
+    rows:2,
+    gutter: 3pt,  // 图片间距
+    image("images/Chapter3/cropped_gt_1.png", width: 4cm , height: 4cm,),
+    image("images/Chapter3/cropped_pred_1.png", width: 4cm, height: 4cm,),
+    image("images/Chapter3/cropped_gt_2.png", width: 4cm, height: 4cm,),
+    image("images/Chapter3/cropped_pred_2.png", width: 4cm, height: 4cm,),
+    image("images/Chapter3/cropped_gt_3.png", width: 4cm, height: 4cm,),
+    image("images/Chapter3/cropped_pred_3.png", width: 4cm, height: 4cm,),
+    image("images/Chapter3/cropped_gt_4.png", width: 4cm, height: 4cm,),
+    image("images/Chapter3/cropped_pred_4.png", width: 4cm, height: 4cm,),
+    ),
+  caption: [局部放大对比]
+  )
+}
+
+==  时空特征融合的3D目标检测算法
+
+基于DETR3D模型的实验结果，本文提出融合时序特征以提升模型的鲁棒性和对于遮挡物体的检测性能。对于遮挡物体，由于无人机难以捕捉其空间信息，可以融合时间信息，从先前帧中获取目标的历史位置。基于历史位置，模型结合无人机本体的移动轨迹和目标的移动速度可以更好的预测遮挡物体的3D位置信息。
+
+考虑到Transformer的自回归特性，本文从Query序列着手。在DETR3D模型，Query序列中一个Token长度为256，经过一层神经网络后得到长度为3的张量，代表物体的3D坐标$x,y,z$。而Transformer中具有6层的解码器结构，Query序列每次经过一次解码操作都会发生变化，这是解码器根据Query的坐标对图像采样后进行的位置修正。所以在最后一层解码器得到的输出Query即为最终的预测结果。
+
+为了融合历史帧的时序信息，可以将上一帧Transformer最后输出的Query序列保留，依照模型给出的置信度分数从高到低截取若干个Query。如此便获取到目标在上一帧的位置，将其作为当前帧的Transformer的Query序列的一部分。而Tranformer的每一层解码器都会将Query经过交叉注意力机制即进行修正。
+
+
+
+== 实验结果
+
+
+== 本章小结
