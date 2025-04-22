@@ -39,13 +39,15 @@ def mouse_callback(event, x, y, flags, param):
             cv2.imshow('Cropped', cropped)
             cv2.imwrite('cropped_gt_%d.png'%id_, cropped)
             cv2.imwrite('cropped_pred_%d.png'%id_, img2[y_min:y_min+height, x_min:x_min+width])
+            cv2.imwrite('cropped_pred_2_%d.png'%id_, img3[y_min:y_min+height, x_min:x_min+width])
             id_ += 1
             print("裁剪完成，结果已保存为 cropped_result.png")
 
 # 主程序
 if __name__ == "__main__":
-    img = cv2.imread('images\Chapter3\RIGHT_gt.png')  # ← 修改为你的图片路径
-    img2 = cv2.imread('images\Chapter3\RIGHT_pred.png')
+    img = cv2.imread(r"C:\Users\Lenovo\Desktop\vis\LEFT_gt.png")  # ← 修改为你的图片路径
+    img2 = cv2.imread(r"C:\Users\Lenovo\Desktop\vis\LEFT_pred.png")
+    img3 = cv2.imread(r"C:\Users\Lenovo\Desktop\vis\LEFT_pred_2.png")
     img_copy = img.copy()
     
     cv2.namedWindow('Image')
