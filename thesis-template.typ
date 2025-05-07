@@ -204,7 +204,7 @@
 
     2、为解决无人机平台运动引起的坐标系偏移问题，提出了基于位姿矩阵的运动补偿机制。通过将利用UAV3D数据集中提供的无人机位姿参数，构建帧间旋转平移变换矩阵，对历史Query进行坐标对齐预处理。上一帧目标坐标转换至当前帧参考系，为Transformer解码器提供更精确的初始位置估计。实验验证显示，该机制将定位误差（mATE）从0.494降低至0.490，证明了对模型收敛的促进作用。
 
-    3、针对无人机视角下小目标特征弱的问题，引入特征金字塔网络实现多尺度特征融合。采用ResNet-101构建自上而下特征金字塔，通过横向连接融合高低层特征的空间定位信息与语义表达。该策略充分利用高分辨率特征图对小目标的空间敏感性和深层特征的语义判别力，在不显著增加计算量的前提下，使模型对远距离小目标的检测精度获得显著提升。综合实验结果显示，所提算法在UAV3D数据集上达到0.626的mAP和0.677的NDS指标，较基线模型分别提升16.0%和10.6%，验证了多尺度融合策略对无人机特殊场景的适应性。
+    3、针对无人机视角下小目标特征弱的问题，引入特征金字塔网络实现多尺度特征融合。采用ResNet-101构建自上而下特征金字塔，通过横向连接融合高低层特征的空间定位信息与语义表达。该策略充分利用高分辨率特征图对小目标的空间敏感性和深层特征的语义判别力，在不显著增加计算量的前提下，使模型对远距离小目标的检测精度获得显著提升。综合实验结果显示，所提算法在UAV3D数据集上达到0.770的mAP和0.777的NDS指标，较基线模型分别提升16.0%和10.6%，验证了多尺度融合策略对无人机特殊场景的适应性。
 
     本研究系统探索了时空特征融合在无人机3D目标检测中的应用潜力，提出的改进方案在保持端到端框架优势的基础上，有效解决了动态遮挡、尺度变化等关键难题。研究成果可为无人机自主导航、智能监控等应用场景提供更精确的环境感知支撑，同时为通用航空视觉任务提供新的方法论参考。
 
@@ -234,7 +234,7 @@
   To address coordinate drift caused by UAV platform movement, we propose a motion compensation mechanism leveraging pose matrices. Using UAV3D dataset  pose parameters, we construct inter-frame rotation-translation transformation matrices to align historical queries through coordinate preprocessing. By transforming previous frame coordinates into the current reference system, the Transformer decoder receives more accurate initial position estimates. Experiments demonstrate reduced localization error (mATE) from 0.494 to 0.490, proving the efficacy of physical alignment in accelerating model convergence.
 
   3.Multi-Scale Feature Fusion via FPN:
-  To strengthen weak feature representations of small targets in UAV perspectives, we implement a ResNet-101-based top-down FPN with lateral connections, integrating high-level semantic features and low-level spatial details. This strategy exploits high-resolution feature maps' sensitivity to small targets and deep features' semantic discriminability, achieving significant detection accuracy improvements for distant targets without substantial computational overhead. Comprehensive experiments on the UAV3D dataset show our method achieves 0.626 mAP and 0.677 NDS metrics—a 16.0% and 10.6% improvement over baseline models respectively—validating its adaptability to UAV-specific scenarios.
+  To strengthen weak feature representations of small targets in UAV perspectives, we implement a ResNet-101-based top-down FPN with lateral connections, integrating high-level semantic features and low-level spatial details. This strategy exploits high-resolution feature maps' sensitivity to small targets and deep features' semantic discriminability, achieving significant detection accuracy improvements for distant targets without substantial computational overhead. Comprehensive experiments on the UAV3D dataset show our method achieves 0.770 mAP and 0.777 NDS metrics—a 16.0% and 10.6% improvement over baseline models respectively—validating its adaptability to UAV-specific scenarios.
 
   This study systematically explores the potential of spatiotemporal feature fusion in UAV 3D object detection. While preserving the advantages of end-to-end frameworks, our solutions effectively tackle critical challenges like dynamic occlusions and scale variations. The results provide enhanced environmental perception capabilities for UAV applications such as autonomous navigation and intelligent surveillance, while offering novel methodological references for general aviation vision tasks.
 ]
@@ -310,10 +310,6 @@
 
   text(font: song, size: 12pt)[
 
-// 时光荏苒，转眼间我的大学本科生活即将画上句号。回首这四年的点点滴滴，心中充满了无尽的感慨与思绪。在毕业论文完成之际，我愿将这四年的经历与感悟凝聚成文字，向求学路上给予我帮助的师长和亲友表达我最真挚的谢意。
-
-// 师恩如海，深不可测。首先，我要特别感谢我的导师菩提教授。从初入大学时的懵懂无知，到如今能够独立完成毕业设计，菩老师始终是我前行路上的明灯。他不仅在学术上给予我悉心的指导，帮助我拓宽视野，提升能力，还在生活中给予我无微不至的关怀，让我感受到如家人般的温暖。在这次毕业设计的过程中，从选题到实验，从撰文到定稿，菩老师的全程指导让我受益匪浅。每一次对实验结果的精益求精，每一次对论文的反复修改，都让我深刻体会到菩老师在科研工作中的严谨态度和对学生的严格要求。在师门的四年时光里，菩老师不仅传授给我学术知识，更教会了我踏实、认真、负责、勤勉的品质，这些品质将伴随我一生，无论是在科研还是其他工作中，甚至在日常生活中。在此论文完成之际，我衷心感谢菩老师一路以来的教导、呵护与关怀。
-  
   逝者如斯夫，不舍昼夜。入学的情景犹在昨日，眨眼间我的大学本科生活却即将结束了。四年的光阴，珍藏了太多的情感，在我的心中汹涌澎湃，久不能平息。在此结束之际，我想借此机会向求学路上给予我帮助的师长和亲友表达我最真挚的感谢。
 
   一朝沐杏雨，终生念师恩。我首先要感谢我的全程导师邓明堂副研究员。仍记得初次与老师相见，老师向我揭开了量子计算神秘的面纱；也记得在实验室亲眼见到稀释制冷机和超算集群的震撼。邓老师在我最迷茫时为我指引了大学的前进方向，告诉我大学的学习要广泛探索各个领域、深入研究一个方向，做“ T ”型人才。后续我选择了自己感兴趣的AI领域，老师为我提供了许多指导与帮助，为我推荐了相关领域的专家。在毕设过程中，我因在校外而有诸多不便。遇到系统上的问题，尽管明天有一场重要会议而忙得不可开交，老师仍然腾出时间帮我修改，令我倍感温暖。在师门的四年，邓老师教与我的不仅是学术上的知识，更教会我勤勉、认真、负责的品质，这些品质将是我一生的财富，伴随我度过今后的人生。在此，我衷心感谢邓老师一路以来的教导、呵护与关怀。
@@ -326,6 +322,8 @@
   最后的最后，感谢我的父母一直以来的关心与支持，让我大学期间能够自由的学习我感兴趣的知识；感谢刘万伟教授和毛晓光教授在大学期间对我的帮助与启发，让我对于计算机和数学更加喜欢；感谢田植良副研究员和赵潇然学姐在大学本科期间对我帮助，让我提前接触了科研并且学习到了很多前沿知识。
 
   我的本科生活的确是要结束了。
+
+  \
 
   悄悄的我走了，正如我悄悄的来；
   
