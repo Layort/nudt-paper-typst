@@ -197,10 +197,21 @@
   // align(center)[#text(size: 16pt, font: hei)[摘#h(1em)要]]
   heading([摘#h(1em)要], level: 6)
   v(16pt)
-  text(font: song, size: 12pt)[摘要内容。]
+  text(font: song, size: 12pt)[
+    随着无人机技术在交通监控、灾害管理等领域的广泛应用，传统2D目标检测方法受限于深度信息缺失和空间感知不足的问题，难以满足复杂场景下对目标三维空间状态精准感知的需求。针对无人机视角下3D目标检测存在的远距离小目标识别困难、遮挡场景鲁棒性不足等核心挑战，本文提出了一种多尺度时空特征融合的端到端3D目标检测算法。基于DETR3D模型框架，通过引入跨帧Query传递机制、运动补偿机制及特征金字塔网络（FPN）多尺度融合策略，构建了具有时空连续性建模能力的检测体系。研究工作主要围绕以下三方面展开：
+
+    1、针对无人机动态场景中目标易受遮挡导致的空间特征缺失问题，设计了跨帧Query传递机制。通过建立历史帧高置信度Query与当前帧特征序列的时序关联，在Transformer解码过程中实现目标状态的连续跟踪。该机制将前一时刻检测结果作为初始查询向量，结合可学习参数构建时序特征融合序列，有效增强了模型对目标运动轨迹的表征能力。实验表明，该策略使DETR3D模型的mAP指标提升1.3个百分点，验证了时序信息对遮挡场景的补偿作用。
+
+    2、为解决无人机平台运动引起的坐标系偏移问题，提出了基于位姿矩阵的运动补偿机制。通过将利用UAV3D数据集中提供的无人机位姿参数，构建帧间旋转平移变换矩阵，对历史Query进行坐标对齐预处理。上一帧目标坐标转换至当前帧参考系，为Transformer解码器提供更精确的初始位置估计。实验验证显示，该机制将定位误差（mATE）从0.494降低至0.490，证明了对模型收敛的促进作用。
+
+    3、针对无人机视角下小目标特征弱的问题，引入特征金字塔网络实现多尺度特征融合。采用ResNet-101构建自上而下特征金字塔，通过横向连接融合高低层特征的空间定位信息与语义表达。该策略充分利用高分辨率特征图对小目标的空间敏感性和深层特征的语义判别力，在不显著增加计算量的前提下，使模型对远距离小目标的检测精度获得显著提升。综合实验结果显示，所提算法在UAV3D数据集上达到0.626的mAP和0.677的NDS指标，较基线模型分别提升16.0%和10.6%，验证了多尺度融合策略对无人机特殊场景的适应性。
+
+    本研究系统探索了时空特征融合在无人机3D目标检测中的应用潜力，提出的改进方案在保持端到端框架优势的基础上，有效解决了动态遮挡、尺度变化等关键难题。研究成果可为无人机自主导航、智能监控等应用场景提供更精确的环境感知支撑，同时为通用航空视觉任务提供新的方法论参考。
+
+  ]
   v(0pt)
   text(font: hei, size: 12pt)[关键词：]
-  text(font: song, size: 12pt)[关键词1；关键词2；关键词3]
+  text(font: song, size: 12pt)[无人机；3D目标检测；时空特征融合；特征金字塔网络；Transformer；]
 
   pagebreak()
   set page(footer: context [
@@ -214,10 +225,23 @@
   // align(center)[#text(size: 16pt, font: tnr, weight: "bold", "ABSTRACT")]
   heading([ABSTRACT], level: 6)
   v(16pt)
-  text(font: song, size: 12pt)[Abstract.]
+  text(font: song, size: 12pt)[With the widespread application of unmanned aerial vehicle (UAV) technology in fields such as traffic monitoring and disaster management, traditional 2D object detection methods face limitations in depth information acquisition and spatial perception, struggling to meet the demands for precise 3D spatial state awareness of targets in complex scenarios. To address core challenges in UAV-based 3D object detection—particularly difficulties in identifying distant small targets and insufficient robustness in occluded scenes—this paper proposes an end-to-end 3D object detection algorithm with multi-scale spatiotemporal feature fusion. Building on the DETR3D framework , we introduce a cross-frame query propagation mechanism, motion compensation strategy, and Feature Pyramid Network (FPN)-based multi-scale fusion approach to construct a detection system capable of spatiotemporal continuity modeling. Our research focuses on three key aspects:
+
+  1.Cross-Frame Query Propagation for Occlusion Resilience:
+  To mitigate spatial feature loss caused by occlusions in dynamic UAV scenes, we design a cross-frame query propagation mechanism. By establishing temporal associations between high-confidence queries from historical frames and current frame feature sequences, this method achieves continuous target tracking during Transformer decoder operations. It utilizes prior detection results as initial query vectors, integrating learnable parameters to form a temporal feature fusion sequence. This enhances the model's ability to represent target motion trajectories. Experimental results show a 1.3 percentage-point improvement in the mAP metric of the DETR3D framework, validating the compensatory effect of temporal information in occluded scenarios.
+
+  2.Pose Matrix-Based Motion Compensation:
+  To address coordinate drift caused by UAV platform movement, we propose a motion compensation mechanism leveraging pose matrices. Using UAV3D dataset  pose parameters, we construct inter-frame rotation-translation transformation matrices to align historical queries through coordinate preprocessing. By transforming previous frame coordinates into the current reference system, the Transformer decoder receives more accurate initial position estimates. Experiments demonstrate reduced localization error (mATE) from 0.494 to 0.490, proving the efficacy of physical alignment in accelerating model convergence.
+
+  3.Multi-Scale Feature Fusion via FPN:
+  To strengthen weak feature representations of small targets in UAV perspectives, we implement a ResNet-101-based top-down FPN with lateral connections, integrating high-level semantic features and low-level spatial details. This strategy exploits high-resolution feature maps' sensitivity to small targets and deep features' semantic discriminability, achieving significant detection accuracy improvements for distant targets without substantial computational overhead. Comprehensive experiments on the UAV3D dataset show our method achieves 0.626 mAP and 0.677 NDS metrics—a 16.0% and 10.6% improvement over baseline models respectively—validating its adaptability to UAV-specific scenarios.
+
+  This study systematically explores the potential of spatiotemporal feature fusion in UAV 3D object detection. While preserving the advantages of end-to-end frameworks, our solutions effectively tackle critical challenges like dynamic occlusions and scale variations. The results provide enhanced environmental perception capabilities for UAV applications such as autonomous navigation and intelligent surveillance, while offering novel methodological references for general aviation vision tasks.
+]
   v(0pt)
   text(font: hei, size: 12pt, weight: "bold")[KEY WORDS: ]
-  text(font: song, size: 12pt)[key word 1, key word 2, key word 3]
+  // 无人机；3D目标检测；时空特征融合；特征金字塔网络；Transformer；
+  text(font: song, size: 12pt)[UAV, 3D Object Detection, Spatiotemporal Feature Fusion, FPN, Transformer]
   pagebreak()
 
   counter(page).update(1)
@@ -303,7 +327,9 @@
 
   我的本科生活的确是要结束了。
 
-  挥一挥衣袖，不带走一片云彩。
+  悄悄的我走了，正如我悄悄的来；
+  
+  我挥一挥衣袖，不带走一片云彩。
 
   ]
 
