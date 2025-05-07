@@ -210,7 +210,7 @@ PETR首先在三维空间中选取均匀分布的锚点，接着通过全连接�
 改进模型结构如下：
 #{
 set text(size: 10.5pt)
-figure(image("images/UAV3D_town10.jpg"), caption: "改进模型结构")
+figure(image("images/整体框架.svg"), caption: "改进模型结构")
 }
 \
 
@@ -608,7 +608,7 @@ PETR与BEVFusion模型在@1.2.5 中有关于总体的介绍。其中BEVFusion模
 
 
 #figure(
-  image("images/Chapter3/cropped_pred_4.png"),
+  image("images/Chapter3/时空特征融合框架.svg", width: 14cm),
   caption: [时空特征融合框架]
 )
 
@@ -620,7 +620,7 @@ $ E_(t-1 arrow t)=E_t^(-1) dot E_(t-1) $ 其中$E_(t-1)$和$E_t$分别为前一�
 以此坐标为起点，Transformer通过层层的解码器对Query的坐标进行修正，缩短了Transformer中Query坐标的收敛时间，能够让Transformer对于目标位置进行精细的检测。
 
 #figure(
-  image("images/Chapter3/cropped_pred_4.png"),
+  image("images/Chapter3/运动补偿.svg", width: 16cm),
   caption: [运动补偿框架]
 )
 
